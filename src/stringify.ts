@@ -1,7 +1,7 @@
-import { quoteString } from "./quote";
-import { Next, ToString } from "./types";
-import { objectToString } from "./object";
-import { functionToString } from "./function";
+import { quoteString } from "./quote.ts";
+import { Next, ToString } from "./types.ts";
+import { objectToString } from "./object.ts";
+import { functionToString } from "./function.ts";
 
 /**
  * Stringify primitive values.
@@ -23,7 +23,7 @@ const PRIMITIVE_TYPES: Record<string, ToString> = {
   },
   undefined: String,
   object: objectToString,
-  function: functionToString
+  function: functionToString,
 };
 
 /**

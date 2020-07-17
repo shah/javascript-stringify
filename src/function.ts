@@ -1,38 +1,37 @@
-import { Next, ToString } from "./types";
-import { quoteKey, isValidVariableName } from "./quote";
+import { Next, ToString } from "./types.ts";
+import { quoteKey, isValidVariableName } from "./quote.ts";
 
 /**
  * Used in function stringification.
  */
 /* istanbul ignore next */
-const METHOD_NAMES_ARE_QUOTED =
-  {
-    " "() {
-      /* Empty. */
-    }
-  }[" "]
-    .toString()
-    .charAt(0) === '"';
+const METHOD_NAMES_ARE_QUOTED = {
+  " "() {
+    /* Empty. */
+  },
+}[" "]
+  .toString()
+  .charAt(0) === '"';
 
 const FUNCTION_PREFIXES = {
   Function: "function ",
   GeneratorFunction: "function* ",
   AsyncFunction: "async function ",
-  AsyncGeneratorFunction: "async function* "
+  AsyncGeneratorFunction: "async function* ",
 };
 
 const METHOD_PREFIXES = {
   Function: "",
   GeneratorFunction: "*",
   AsyncFunction: "async ",
-  AsyncGeneratorFunction: "async *"
+  AsyncGeneratorFunction: "async *",
 };
 
 const TOKENS_PRECEDING_REGEXPS = new Set(
   (
     "case delete else in instanceof new return throw typeof void " +
     ", ; : + - ! ~ & | ^ * / % < > ? ="
-  ).split(" ")
+  ).split(" "),
 );
 
 /**
@@ -88,15 +87,17 @@ export class FunctionParser {
     public fn: Function,
     public indent: string,
     public next: Next,
-    public key?: string
+    public key?: string,
   ) {
     this.fnString = Function.prototype.toString.call(fn);
     this.fnType = fn.constructor.name as keyof typeof FUNCTION_PREFIXES;
     this.keyQuote = key === undefined ? "" : quoteKey(key, next);
-    this.keyPrefix =
-      key === undefined ? "" : `${this.keyQuote}:${indent ? " " : ""}`;
-    this.isMethodCandidate =
-      key === undefined ? false : this.fn.name === "" || this.fn.name === key;
+    this.keyPrefix = key === undefined
+      ? ""
+      : `${this.keyQuote}:${indent ? " " : ""}`;
+    this.isMethodCandidate = key === undefined
+      ? false
+      : this.fn.name === "" || this.fn.name === key;
   }
 
   stringify() {
@@ -255,7 +256,7 @@ export class FunctionParser {
    */
   consumeSyntax(wordLikeToken?: string) {
     const m = this.consumeMatch(
-      /^(?:([A-Za-z_0-9$\xA0-\uFFFF]+)|=>|\+\+|\-\-|.)/
+      /^(?:([A-Za-z_0-9$\xA0-\uFFFF]+)|=>|\+\+|\-\-|.)/,
     );
 
     if (!m) return;

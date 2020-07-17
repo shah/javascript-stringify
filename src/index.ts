@@ -1,6 +1,6 @@
-import { toString } from "./stringify";
-import { stringifyPath } from "./quote";
-import { Next, ToString } from "./types";
+import { toString } from "./stringify.ts";
+import { stringifyPath } from "./quote.ts";
+import { Next, ToString } from "./types.ts";
 
 export interface Options {
   maxDepth?: number;
@@ -21,7 +21,7 @@ export function stringify(
   value: any,
   replacer?: ToString | null,
   indent?: string | number | null,
-  options: Options = {}
+  options: Options = {},
 ) {
   const space = typeof indent === "string" ? indent : " ".repeat(indent || 0);
   const path: PropertyKey[] = [];
@@ -34,7 +34,7 @@ export function stringify(
     maxDepth = 100,
     references = false,
     skipUndefinedProperties = false,
-    maxValues = 100000
+    maxValues = 100000,
   } = options;
 
   // Wrap replacer function to support falling back on supported stringify.
@@ -57,34 +57,34 @@ export function stringify(
 
   const builder: Next = references
     ? (value, key) => {
-        if (
-          value !== null &&
-          (typeof value === "object" ||
-            typeof value === "function" ||
-            typeof value === "symbol")
-        ) {
-          // Track nodes to restore later.
-          if (tracking.has(value)) {
-            unpack.set(path.slice(1), tracking.get(value)!);
-            // Use `undefined` as temporaray stand-in for referenced nodes
-            return valueToString(undefined, space, onNext, key);
-          }
-
-          // Track encountered nodes.
-          tracking.set(value, path.slice(1));
+      if (
+        value !== null &&
+        (typeof value === "object" ||
+          typeof value === "function" ||
+          typeof value === "symbol")
+      ) {
+        // Track nodes to restore later.
+        if (tracking.has(value)) {
+          unpack.set(path.slice(1), tracking.get(value)!);
+          // Use `undefined` as temporaray stand-in for referenced nodes
+          return valueToString(undefined, space, onNext, key);
         }
 
-        return valueToString(value, space, onNext, key);
+        // Track encountered nodes.
+        tracking.set(value, path.slice(1));
       }
-    : (value, key) => {
-        // Stop on recursion.
-        if (stack.has(value)) return;
 
-        stack.add(value);
-        const result = valueToString(value, space, onNext, key);
-        stack.delete(value);
-        return result;
-      };
+      return valueToString(value, space, onNext, key);
+    }
+    : (value, key) => {
+      // Stop on recursion.
+      if (stack.has(value)) return;
+
+      stack.add(value);
+      const result = valueToString(value, space, onNext, key);
+      stack.delete(value);
+      return result;
+    };
 
   const result = onNext(value, ROOT_SENTINEL);
 
@@ -118,7 +118,7 @@ function replacerToString(replacer?: ToString | null): ToString {
       value,
       space,
       (value: any) => toString(value, space, next, key),
-      key
+      key,
     );
   };
 }

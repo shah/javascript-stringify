@@ -1,14 +1,14 @@
-import { Next, ToString } from "./types";
-import { quoteKey } from "./quote";
-import { USED_METHOD_KEY } from "./function";
-import { arrayToString } from "./array";
+import { Next, ToString } from "./types.ts";
+import { quoteKey } from "./quote.ts";
+import { USED_METHOD_KEY } from "./function.ts";
+import { arrayToString } from "./array.ts";
 
 /**
  * Transform an object into a string.
  */
 export const objectToString: ToString = (value, space, next, key) => {
-  if (typeof (Buffer as unknown) === "function" && Buffer.isBuffer(value)) {
-    return `new Buffer(${next(value.toString())})`;
+  if (value instanceof Deno.Buffer) {
+    return `new Deno.Buffer(${next(value.toString())})`;
   }
 
   // Use the internal object string to select stringify method.
@@ -26,7 +26,7 @@ const rawObjectToString: ToString = (obj, indent, next) => {
   // Iterate over object keys and concat string together.
   const values = Object.keys(obj)
     .reduce(
-      function(values, key) {
+      function (values, key) {
         const fn = obj[key];
         const result = next(fn, key);
 
@@ -45,7 +45,7 @@ const rawObjectToString: ToString = (obj, indent, next) => {
         values.push(`${indent}${quoteKey(key, next)}:${space}${value}`);
         return values;
       },
-      [] as string[]
+      [] as string[],
     )
     .join(`,${eol}`);
 
@@ -91,5 +91,5 @@ const OBJECT_TYPES: Record<string, ToString> = {
   },
   "[object RegExp]": String,
   "[object global]": globalToString,
-  "[object Window]": globalToString
+  "[object Window]": globalToString,
 };
