@@ -1,5 +1,5 @@
 import type { Next, ToString } from "./types.ts";
-import type { quoteKey, isValidVariableName } from "./quote.ts";
+import { quoteKey, isValidVariableName } from "./quote.ts";
 
 /**
  * Used in function stringification.
@@ -287,7 +287,7 @@ export class FunctionParser {
   consumeSyntaxUntil(startToken: string, endToken: string): string | undefined {
     let isRegExpAllowed = true;
 
-    for (; ;) {
+    for (;;) {
       const token = this.consumeSyntax();
       if (token === endToken) return startToken + endToken;
       if (!token || token === ")" || token === "]" || token === "}") return;
@@ -327,7 +327,7 @@ export class FunctionParser {
    * Advance the parser past a template string.
    */
   consumeTemplate() {
-    for (; ;) {
+    for (;;) {
       this.consumeMatch(/^(?:[^`$\\]|\\.|\$(?!{))*/);
 
       if (this.fnString[this.pos] === "`") {

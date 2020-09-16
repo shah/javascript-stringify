@@ -1,4 +1,4 @@
-import { ToString } from "./types.ts";
+import type { ToString } from "./types.ts";
 
 /**
  * Stringify an array of values.

@@ -1,4 +1,4 @@
-import { Next, ToString } from "./types.ts";
+import type { Next, ToString } from "./types.ts";
 import { quoteKey } from "./quote.ts";
 import { USED_METHOD_KEY } from "./function.ts";
 import { arrayToString } from "./array.ts";

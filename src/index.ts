@@ -1,6 +1,6 @@
 import { toString } from "./stringify.ts";
 import { stringifyPath } from "./quote.ts";
-import { Next, ToString } from "./types.ts";
+import type { Next, ToString } from "./types.ts";
 
 export interface Options {
   maxDepth?: number;

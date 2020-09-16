@@ -1,5 +1,5 @@
 import { quoteString } from "./quote.ts";
-import { Next, ToString } from "./types.ts";
+import type { Next, ToString } from "./types.ts";
 import { objectToString } from "./object.ts";
 import { functionToString } from "./function.ts";
 

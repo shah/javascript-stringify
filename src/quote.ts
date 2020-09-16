@@ -1,4 +1,4 @@
-import { Next } from "./types.ts";
+import type { Next } from "./types.ts";
 
 /**
  * Match all characters that need to be escaped in a string. Modified from

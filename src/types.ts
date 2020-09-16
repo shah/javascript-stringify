@@ -1,7 +1,7 @@
 /**
  * Call `next()` every time you want to stringify a new value.
  */
-export type Next = (value: any, key?: PropertyKey) => string | undefined;
+export type Next = (value: unknown, key?: PropertyKey) => string | undefined;
 
 /**
  * Stringify a value.
@@ -10,5 +10,5 @@ export type ToString = (
   value: any,
   space: string,
   next: Next,
-  key: PropertyKey | undefined
+  key: PropertyKey | undefined,
 ) => string | undefined;
